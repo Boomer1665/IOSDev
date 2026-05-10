@@ -7,7 +7,7 @@
 
 
 import SwiftUI
-// Central colour palette — all dark-mode greys defined in one place so views stay consistent.
+// Central colour palette in which all dark-mode greys are defined in one place so views stay consistent.
 enum NXColor {
     static let bg = Color(white: 0.05)    // Near-black app background
     static let sheetBg = Color(white: 0.07)    // Slightly lighter for modal sheets
