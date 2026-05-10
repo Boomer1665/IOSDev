@@ -7,11 +7,11 @@
 
 
 import Foundation
-
+// User-configurable settings that survive between launches via JSON encoding in UserDefaults.
 struct AppSettings: Codable {
-    var waterGoalML: Double = 2500
-    var activeStartHour: Int = 8
-    var activeEndHour: Int = 22
-    var hasCompletedOnboarding: Bool = false
-    var lastResetDateKey: String = ""
+    var waterGoalML: Double = 2500    // Daily water target in millilitres
+    var activeStartHour: Int = 8    // Earliest hour for notification delivery
+    var activeEndHour: Int = 22    // Latest hour for notification delivery
+    var hasCompletedOnboarding: Bool = false    // Guards the onboarding flow
+    var lastResetDateKey: String = ""    // Tracks which calendar day was last reset
 }
