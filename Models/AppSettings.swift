@@ -7,7 +7,7 @@
 
 
 import Foundation
-// User-configurable settings that survive between launches via JSON encoding in UserDefaults.
+// User configurable settings that survive between launches via JSON encoding in UserDefaults.
 struct AppSettings: Codable {
     var waterGoalML: Double = 2500    // Daily water target in millilitres
     var activeStartHour: Int = 8    // Earliest hour for notification delivery
