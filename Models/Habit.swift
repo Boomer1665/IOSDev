@@ -7,12 +7,13 @@
 
 
 import Foundation
-
+// Single habit entity. history maps date-key strings to completion booleans,
+// enabling streak calculation and the 28-day grid.
 struct Habit: Identifiable, Codable, Equatable {
     var id = UUID()
     var name: String
     var frequency: HabitFrequency = .daily
-    var isCompleted: Bool = false
-    var streak: Int = 0
-    var history: [String: Bool] = [:]
+    var isCompleted: Bool = false    // Today's completion state
+    var streak: Int = 0    // Consecutive days completed
+    var history: [String: Bool] = [:]    // "yyyy-MM-dd" → completed?
 }
