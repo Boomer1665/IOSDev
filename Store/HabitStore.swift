@@ -9,14 +9,15 @@ import SwiftUI
 import Combine
 import UserNotifications
 
+// ObservableObject that holds all app state and business logic, injected into views via @EnvironmentObject.
 final class HabitStore: ObservableObject {
-    @Published var habits            : [Habit]      = []
-    @Published var currentWaterML    : Double       = 0
+    @Published var habits            : [Habit]      = []       // All habits created by the user
+    @Published var currentWaterML    : Double       = 0        // Water logged so far today
     @Published var settings          = AppSettings()
-    @Published var dayRecords        : [DayRecord]  = []
-    @Published var showWaterGoalBanner = false
+    @Published var dayRecords        : [DayRecord]  = []       // Historical daily snapshots, capped at 120 entries
+    @Published var showWaterGoalBanner = false                  // Set to true briefly when the daily water goal is reached
 
-    // persistence keys
+    // UserDefaults keys, versioned to avoid conflicts with data from older builds
     private enum K {
         static let habits   = "nx_habits_v2"
         static let water    = "nx_water_v2"
@@ -24,19 +25,23 @@ final class HabitStore: ObservableObject {
         static let records  = "nx_records_v2"
     }
 
+    // Shared date formatter, created once and reused to avoid repeated allocation
     static let dateFmt: DateFormatter = {
         let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return f
     }()
 
+    // Today's date as a "yyyy-MM-dd" string, used as the key into each habit's history dictionary
     var todayKey: String { Self.dateFmt.string(from: Date()) }
 
     // MARK: Computed
 
+    // Ratio of water consumed to goal, capped at 1.0
     var waterProgress: Double {
         guard settings.waterGoalML > 0 else { return 0 }
         return min(currentWaterML / settings.waterGoalML, 1.0)
     }
 
+    // Returns red below 50%, yellow below 90%, and blue at or above 90%
     var waterColor: Color {
         switch waterProgress {
         case 0.9... : return Color(red: 0.25, green: 0.65, blue: 1.0)
@@ -45,6 +50,7 @@ final class HabitStore: ObservableObject {
         }
     }
 
+    // Incomplete habits appear first, with alphabetical ordering within each group
     var sortedHabits: [Habit] {
         habits.sorted {
             if $0.isCompleted != $1.isCompleted { return !$0.isCompleted }
@@ -52,15 +58,17 @@ final class HabitStore: ObservableObject {
         }
     }
 
-    var completedCount : Int    { habits.filter { $0.isCompleted }.count }
-    var dailyProgress  : Double { habits.isEmpty ? 0 : Double(completedCount) / Double(habits.count) }
+    var completedCount : Int    { habits.filter { $0.isCompleted }.count }          // Number of habits marked complete today
+    var dailyProgress  : Double { habits.isEmpty ? 0 : Double(completedCount) / Double(habits.count) } // Fraction of today's habits completed, from 0.0 to 1.0
 
     // MARK: Init
 
+    // Restores persisted data then checks whether the date has rolled over since last launch
     init() { load(); checkMidnightReset() }
 
     // MARK: Actions
 
+    // Toggles the habit's completion state, updates its history and streak, then saves
     func toggleHabit(_ id: UUID) {
         guard let i = habits.firstIndex(where: { $0.id == id }) else { return }
         habits[i].isCompleted.toggle()
@@ -69,6 +77,7 @@ final class HabitStore: ObservableObject {
         save()
     }
 
+    // Adds the given amount to today's water total and triggers the goal banner if the threshold is crossed
     func incrementWater(ml: Double) {
         let wasBelow = currentWaterML < settings.waterGoalML
         currentWaterML = min(currentWaterML + ml, settings.waterGoalML * 1.5)
@@ -83,18 +92,20 @@ final class HabitStore: ObservableObject {
         save()
     }
 
+    // Validates the name is not blank before appending the new habit and saving
     func addHabit(name: String, frequency: HabitFrequency) {
         guard !name.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         habits.append(Habit(name: name, frequency: frequency))
         save()
     }
 
+    // Removes all habits whose IDs are in the provided array, then saves
     func removeHabits(ids: [UUID]) {
         habits.removeAll { ids.contains($0.id) }
         save()
     }
 
-    /// Called by FocusTimerView when the countdown hits zero.
+    // Finds the first incomplete habit with a focus-related name and marks it complete. Called by FocusTimerView when the countdown hits zero.
     func autoCompleteFocusHabit() {
         let kw = ["deep work", "focus", "study", "work"]
         if let i = habits.firstIndex(where: { h in
@@ -109,6 +120,7 @@ final class HabitStore: ObservableObject {
 
     // MARK: Midnight Reset
 
+    // Archives the previous day and resets completion states when the calendar date has changed
     func checkMidnightReset() {
         let today = todayKey
         guard settings.lastResetDateKey != today else { return }
@@ -125,6 +137,7 @@ final class HabitStore: ObservableObject {
         save()
     }
 
+    // Saves a DayRecord for the given date key and trims the archive to 120 entries
     private func archiveDay(_ key: String) {
         guard !dayRecords.contains(where: { $0.dateKey == key }) else { return }
         let record = DayRecord(
@@ -137,6 +150,7 @@ final class HabitStore: ObservableObject {
         if dayRecords.count > 120 { dayRecords = Array(dayRecords.suffix(120)) }
     }
 
+    // Walks backwards through the habit's history counting consecutive completed days
     private func calcStreak(_ habit: Habit) -> Int {
         let cal = Calendar.current
         var streak = 0
@@ -153,16 +167,19 @@ final class HabitStore: ObservableObject {
 
     // MARK: History helpers
 
+    // Returns water logged on a given day, using the live value for today and archived records for past days
     func waterML(daysAgo: Int) -> Double {
         if daysAgo == 0 { return currentWaterML }
         let key = dateKey(daysAgo: daysAgo)
         return dayRecords.first(where: { $0.dateKey == key })?.waterML ?? 0
     }
 
+    // Returns the archived DayRecord for a given number of days ago, or nil if none exists
     func dayRecord(daysAgo: Int) -> DayRecord? {
         dayRecords.first(where: { $0.dateKey == dateKey(daysAgo: daysAgo) })
     }
 
+    // Converts a days-ago offset into the corresponding "yyyy-MM-dd" string
     private func dateKey(daysAgo: Int) -> String {
         let cal = Calendar.current
         guard let d = cal.date(byAdding: .day, value: -daysAgo, to: Date()) else { return "" }
@@ -171,6 +188,7 @@ final class HabitStore: ObservableObject {
 
     // MARK: Notifications
 
+    // Requests notification permission from the system and schedules nudges if granted
     func requestNotifications() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge]) { ok, _ in
@@ -178,6 +196,7 @@ final class HabitStore: ObservableObject {
             }
     }
 
+    // Clears existing scheduled notifications and registers a 2pm water reminder and an 8pm habit reminder
     private func scheduleNudges() {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
@@ -198,6 +217,7 @@ final class HabitStore: ObservableObject {
 
     // MARK: Persistence
 
+    // Encodes habits, settings, and records to JSON and writes them to UserDefaults
     func save() {
         let e = JSONEncoder()
         if let d = try? e.encode(habits)     { UserDefaults.standard.set(d, forKey: K.habits)   }
@@ -206,6 +226,7 @@ final class HabitStore: ObservableObject {
         UserDefaults.standard.set(currentWaterML, forKey: K.water)
     }
 
+    // Reads and decodes all persisted data from UserDefaults, silently skipping anything missing or corrupt
     func load() {
         let d = JSONDecoder()
         if let raw = UserDefaults.standard.data(forKey: K.habits),
@@ -217,4 +238,3 @@ final class HabitStore: ObservableObject {
         currentWaterML = UserDefaults.standard.double(forKey: K.water)
     }
 }
-
