@@ -7,7 +7,7 @@
 
 
 import SwiftUI
-
+// App entry point which creates a single HabitStore and injects it into the environment,
 @main
 struct DailyHabitTrackerApp: App {
     @StateObject private var store = HabitStore()
@@ -16,7 +16,7 @@ struct DailyHabitTrackerApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(store)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.dark) // Forces dark mode regardless of system setting
         }
     }
 }
