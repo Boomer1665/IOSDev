@@ -63,14 +63,32 @@ struct WaterTankView: View {
     private func fmtML(_ v: Double) -> String {
         v >= 1000 ? String(format: "%.1f L", v / 1000) : String(format: "%.0f ml", v)
     }
+
     private func waterBtn(_ label: String, ml: Double) -> some View {
-        Button { withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) { store.incrementWater(ml: ml) } } label: {
-            Text(label)
-                .font(.system(size: 16, weight: .semibold)).foregroundColor(.white)
-                .frame(maxWidth: .infinity).padding(.vertical, 14)
-                .background(store.waterColor.opacity(0.18))
-                .cornerRadius(14)
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(store.waterColor.opacity(0.3), lineWidth: 1))
+        let subtitle = ml == 250 ? "≈ 1 cup" : "≈ 1 bottle"
+
+        return Button {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                store.incrementWater(ml: ml)
+            }
+        } label: {
+            VStack(spacing: 3) {
+                Text(label)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+
+                Text(subtitle)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(.white.opacity(0.65))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(store.waterColor.opacity(0.18))
+            .cornerRadius(14)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(store.waterColor.opacity(0.3), lineWidth: 1)
+            )
         }
     }
 }
