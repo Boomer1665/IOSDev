@@ -1,6 +1,6 @@
 //
 //  RootView.swift
-//  DailyHabitTracker
+//  HabitMate
 //
 //  Created by Kian Hirani on 29/4/2026.
 //

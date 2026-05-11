@@ -1,6 +1,6 @@
 //
-//  DailyHabitTrackerApp.swift
-//  DailyHabitTracker
+//  HabitMateApp.swift
+//  HabitMate
 //
 //  Created by Kian Hirani on 29/4/2026.
 //
@@ -9,7 +9,7 @@
 import SwiftUI
 // App entry point which creates a single HabitStore and injects it into the environment,
 @main
-struct DailyHabitTrackerApp: App {
+struct HabitMateApp: App {
     @StateObject private var store = HabitStore()
 
     var body: some Scene {

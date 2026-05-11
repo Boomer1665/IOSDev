@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		5AF6D33F2FAC2813006D4575 /* DailyHabitTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyHabitTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AF6D33F2FAC2813006D4575 /* HabitMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5AF6D28E2FAC125C006D4575 /* DailyHabitTracker */ = {
+		5AF6D28E2FAC125C006D4575 /* HabitMate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DailyHabitTracker;
+			path = HabitMate;
 			sourceTree = "<group>";
 		};
 		5AF6D2D32FAC200B006D4575 /* App */ = {
@@ -62,23 +62,23 @@
 		5AF6D2832FAC125C006D4575 = {
 			isa = PBXGroup;
 			children = (
-				5AF6D28E2FAC125C006D4575 /* DailyHabitTracker */,
+				5AF6D28E2FAC125C006D4575 /* HabitMate */,
 				5AF6D2D32FAC200B006D4575 /* App */,
 				5AF6D2FB2FAC207C006D4575 /* Models */,
 				5AF6D2FD2FAC208E006D4575 /* Store */,
 				5AF6D2FF2FAC20AA006D4575 /* Views */,
 				5AF6D3012FAC20BB006D4575 /* Design */,
 				5AF6D3052FAC20EF006D4575 /* Utilities */,
-				5AF6D33F2FAC2813006D4575 /* DailyHabitTracker.app */,
+				5AF6D33F2FAC2813006D4575 /* HabitMate.app */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5AF6D28B2FAC125C006D4575 /* DailyHabitTracker */ = {
+		5AF6D28B2FAC125C006D4575 /* HabitMate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5AF6D2972FAC125F006D4575 /* Build configuration list for PBXNativeTarget "DailyHabitTracker" */;
+			buildConfigurationList = 5AF6D2972FAC125F006D4575 /* Build configuration list for PBXNativeTarget "HabitMate" */;
 			buildPhases = (
 				5AF6D2882FAC125C006D4575 /* Sources */,
 				5AF6D2892FAC125C006D4575 /* Frameworks */,
@@ -89,7 +89,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5AF6D28E2FAC125C006D4575 /* DailyHabitTracker */,
+				5AF6D28E2FAC125C006D4575 /* HabitMate */,
 				5AF6D2D32FAC200B006D4575 /* App */,
 				5AF6D2FB2FAC207C006D4575 /* Models */,
 				5AF6D2FD2FAC208E006D4575 /* Store */,
@@ -97,11 +97,11 @@
 				5AF6D3012FAC20BB006D4575 /* Design */,
 				5AF6D3052FAC20EF006D4575 /* Utilities */,
 			);
-			name = DailyHabitTracker;
+			name = HabitMate;
 			packageProductDependencies = (
 			);
 			productName = DailyHabitTracker;
-			productReference = 5AF6D33F2FAC2813006D4575 /* DailyHabitTracker.app */;
+			productReference = 5AF6D33F2FAC2813006D4575 /* HabitMate.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -120,7 +120,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5AF6D2872FAC125C006D4575 /* Build configuration list for PBXProject "DailyHabitTracker" */;
+			buildConfigurationList = 5AF6D2872FAC125C006D4575 /* Build configuration list for PBXProject "HabitMate" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -134,7 +134,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5AF6D28B2FAC125C006D4575 /* DailyHabitTracker */,
+				5AF6D28B2FAC125C006D4575 /* HabitMate */,
 			);
 		};
 /* End PBXProject section */
@@ -302,7 +302,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.KianH.DailyHabitTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KianH.HabitMate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -336,7 +336,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.KianH.DailyHabitTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KianH.HabitMate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -351,7 +351,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5AF6D2872FAC125C006D4575 /* Build configuration list for PBXProject "DailyHabitTracker" */ = {
+		5AF6D2872FAC125C006D4575 /* Build configuration list for PBXProject "HabitMate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AF6D2952FAC125F006D4575 /* Debug */,
@@ -360,7 +360,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5AF6D2972FAC125F006D4575 /* Build configuration list for PBXNativeTarget "DailyHabitTracker" */ = {
+		5AF6D2972FAC125F006D4575 /* Build configuration list for PBXNativeTarget "HabitMate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5AF6D2982FAC125F006D4575 /* Debug */,

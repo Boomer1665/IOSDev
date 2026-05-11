@@ -1,6 +1,6 @@
 //
 //  HabitFrequency.swift
-//  DailyHabitTracker
+//  HabitMate
 //
 //  Created by Kian Hirani on 4/5/2026.
 //

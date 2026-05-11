@@ -1,6 +1,6 @@
 //
 //  DailyProgressBar.swift
-//  DailyHabitTracker
+//  HabitMate
 //
 //  Created by Kian Hirani on 2/5/2026.
 //
